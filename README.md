@@ -1,5 +1,5 @@
 # Boids
-2D &amp; 3D Boids with settings and UI.
+2D &amp boids with settings and UI.
 
 ## Screenshots
 ![1](screenshots/screen1.png)
