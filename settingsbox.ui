@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsBox</class>
+ <widget class="QGroupBox" name="SettingsBox">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>208</width>
+    <height>248</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>GroupBox</string>
+  </property>
+  <widget class="QCheckBox" name="boids_view_show">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>188</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the area around the boids, inside which they see other boids and obstacles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Show boids visibility</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="reload_button">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>175</y>
+     <width>170</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Respawn Boids</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="quit_button">
+   <property name="geometry">
+    <rect>
+     <x>19</x>
+     <y>210</y>
+     <width>171</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>4</x>
+     <y>90</y>
+     <width>200</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mininum value is 50&lt;/p&gt;&lt;p&gt;Maximum value is 200&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>37</x>
+      <y>3</y>
+      <width>126</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of boisds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="boids_number_slider">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>180</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>SizeHorCursor</cursorShape>
+    </property>
+    <property name="minimum">
+     <number>50</number>
+    </property>
+    <property name="maximum">
+     <number>200</number>
+    </property>
+    <property name="sliderPosition">
+     <number>125</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_2">
+   <property name="geometry">
+    <rect>
+     <x>4</x>
+     <y>40</y>
+     <width>200</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum value is 40&lt;/p&gt;&lt;p&gt;Maximun value is 100&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>18</x>
+      <y>4</y>
+      <width>164</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::DefaultContextMenu</enum>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boids' bowsight range&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="radius_slider">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>180</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>SizeHorCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="minimum">
+     <number>40</number>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>70</number>
+    </property>
+    <property name="sliderPosition">
+     <number>70</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="add_circle_button">
+   <property name="geometry">
+    <rect>
+     <x>19</x>
+     <y>140</y>
+     <width>170</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Obstacle that boids fly around.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="text">
+    <string>Add circular obstacle</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

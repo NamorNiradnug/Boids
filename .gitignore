@@ -31,5 +31,5 @@
 *.out
 *.app
 
-# Project files
-*.pro*
+# QtCreator .user files
+*.user

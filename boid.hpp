@@ -1,27 +1,14 @@
 #pragma once
-#include <QtCore>
-#include <QPainter>
+#include <QPointF>
+
 #include <vector>
 
+class Circle;
+class QRect;
+class QPainter;
 
 double frandom();
 double squeresSum(QPointF point);
-
-
-class Circle
-{
-public:
-    Circle(QPointF center, double radius);
-    void setRadius(double radius);
-    void setCenter(QPointF center);
-    QPointF center();
-    double radius();
-
-private:
-    QPointF center_;
-    double radius_;
-};
-
 
 class Boid
 {

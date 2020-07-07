@@ -1,51 +1,22 @@
-#include <boid.h>
-#include <random>
-#include <iostream>
+#include <QRect>
+#include <QPainter>
 
+#include <cmath>
 
-double inline frandom()
+#include "circle.hpp"
+#include "boid.hpp"
+
+double frandom()
 {
     return (double)rand() / RAND_MAX;
 }
 
-
-double inline squeresSum(QPointF point)
+double squeresSum(QPointF point)
 {
     return point.x() * point.x() + point.y() * point.y();
 }
 
-/* Circle methods */
-Circle::Circle(QPointF center, double radius)
-{
-    setRadius(radius);
-    setCenter(center);
-}
-
-void inline Circle::setRadius(double radius)
-{
-    if (radius >= 0)
-    {
-        radius_ = radius;
-    }
-}
-
-void inline Circle::setCenter(QPointF center)
-{
-    center_ = center;
-}
-
-QPointF inline Circle::center()
-{
-    return center_;
-}
-
-double inline Circle::radius()
-{
-    return radius_;
-}
-
-/* Boid methods */
-double Boid::view_radius = 50.0;
+double Boid::view_radius = 70.0;
 
 Boid::Boid(QRect rect)
 {
@@ -54,12 +25,12 @@ Boid::Boid(QRect rect)
     speed = QPointF(x_speed, sqrt(1 - x_speed * x_speed));
 }
 
-QPointF inline Boid::getPos()
+QPointF Boid::getPos()
 {
     return pos;
 }
 
-QPointF inline Boid::getSpeed()
+QPointF Boid::getSpeed()
 {
     return speed;
 }
@@ -72,28 +43,35 @@ void Boid::tick(std::vector<Boid *> boids, std::vector<Circle> circles)
     QPointF from_others = QPointF();
     QPointF from_circles = QPointF();
     QPointF delta;
+    double dist;
+
     for (Circle circle : circles)
     {
         delta = pos - circle.center();
-        if (squeresSum(delta) < circle.radius() * circle.radius())
+        dist = sqrt(squeresSum(delta)) - circle.radius();
+
+        if (dist <= 0)
         {
-            pos = circle.center() + delta * (0.1 + circle.radius() / sqrt(squeresSum(delta)));
+            pos = circle.center() + delta * (0.01 + circle.radius() / sqrt(squeresSum(delta)));
         }
-        if (squeresSum(delta) <
-                (Boid::view_radius + circle.radius()) * (Boid::view_radius + circle.radius()))
+
+        if (dist <= Boid::view_radius)
         {
-            delta -= delta * circle.radius() / sqrt(squeresSum(delta));
-            from_circles += 4 * delta / squeresSum(delta);
+            from_circles += 4 * delta / (dist * dist * 3);
         }
+
         delta = pos - circle.center();
     }
+
     for (Boid *boid : boids)
     {
         delta = pos - boid->getPos();
+
         if (boid != this && squeresSum(delta) < Boid::view_radius * Boid::view_radius)
         {
             center += boid->getPos();
             speed_sum += boid->getSpeed();
+
             if (delta != QPointF())
             {
                 from_others += delta / sqrt(squeresSum(delta));
@@ -102,22 +80,27 @@ void Boid::tick(std::vector<Boid *> boids, std::vector<Circle> circles)
             {
                 from_others -= boid->getSpeed();
             }
+
             counter++;
         }
     }
+
     if (counter)
     {
         center /= counter;
+
         if (center == pos)
         {
             center += QPointF(1.0, 0.0);
         }
+
         speed = ((center - pos) / sqrt(squeresSum(center - pos))
                  + from_others / (double)counter
                  + speed_sum / (double)counter
-                 );
+                );
         speed /= sqrt(squeresSum(speed));
     }
+
     speed += from_circles;
     speed /= sqrt(squeresSum(speed));
     pos = pos + 2 * speed;
@@ -125,7 +108,8 @@ void Boid::tick(std::vector<Boid *> boids, std::vector<Circle> circles)
 
 void Boid::draw(QPainter *painter)
 {
-    const QPointF triang[3] = {
+    const QPointF triang[3] =
+    {
         pos + speed * 12,
         pos - speed * 3 - QPointF(-speed.y(), speed.x()) * 5,
         pos - speed * 3 + QPointF(-speed.y(), speed.x()) * 5
