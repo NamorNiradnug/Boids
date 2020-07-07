@@ -16,20 +16,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    circle.cpp \
-    main.cpp \
-    frame.cpp \
-    boid.cpp \
-    settingsbox.cpp
+    src/circle.cpp \
+    src/main.cpp \
+    src/frame.cpp \
+    src/boid.cpp \
+    src/settingsbox.cpp
 
 HEADERS += \
-    boid.hpp \
-    circle.hpp \
-    frame.hpp \
-    settingsbox.hpp
+    src/boid.hpp \
+    src/circle.hpp \
+    src/frame.hpp \
+    src/settingsbox.hpp
 
 OTHER_FILES += \
-    .gitignore
+    .gitignore \
+    README.md \
+    screenshots/screen.png \
+    screenshots/add_circle.png \
+    screenshots/circles_added.png
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -37,4 +41,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
-    settingsbox.ui
+    src/settingsbox.ui
