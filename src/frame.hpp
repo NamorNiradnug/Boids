@@ -35,6 +35,7 @@ public slots:
     void updateBoidsRadius();
     void updateBoidsNumber();
     void startAddCircle();
+    void changeScale();
 
 private:
     QRect boidsSpawnRect();
@@ -48,10 +49,11 @@ private:
         Circle(QPointF(200.0, 300.0), 70.0)
     };
     QPoint translate, last_pos;
-    double scale = 1.0;
+    double scale = 1.0, not_scaled = 0.0;
     Qt::MouseButton last_button = Qt::NoButton;
     SettingsBox *settings = new SettingsBox(this);
     QTimer *tick_timer, *draw_timer;
     Mode mode = Mode::Boids;
     QPointF new_circle_center;
+    bool paused = false;
 };

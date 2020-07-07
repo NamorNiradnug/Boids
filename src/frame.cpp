@@ -34,13 +34,13 @@ void Frame::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape)
     {
-        if (!tick_timer->isActive())
+        if (paused)
         {
             setMode(Mode::Boids);
         }
         else
         {
-            tick_timer->stop();
+            paused = true;
         }
     }
 }
@@ -88,10 +88,7 @@ void Frame::mouseReleaseEvent(QMouseEvent *event)
 
 void Frame::wheelEvent(QWheelEvent *event)
 {
-    double k = (double)event->angleDelta().y() / 480.0;
-    scale += k;
-    scale = std::min(scale, 8.0);
-    scale = std::max(scale, 0.3);
+    not_scaled += event->angleDelta().y() / 480.0;
 }
 
 void Frame::paintEvent(QPaintEvent *_)
@@ -151,10 +148,15 @@ void Frame::paintEvent(QPaintEvent *_)
 
 void Frame::tick()
 {
-    for (Boid *boid : boids)
+    if (!paused)
     {
-        boid->tick(boids, circles);
+        for (Boid *boid : boids)
+        {
+            boid->tick(boids, circles);
+        }
     }
+
+    changeScale();
 }
 
 void Frame::reloadBoids()
@@ -196,6 +198,17 @@ void Frame::startAddCircle()
     setMode(Mode::ChangeCicrleCenter);
 }
 
+void Frame::changeScale()
+{
+    if (abs(not_scaled) > 0.2)
+    {
+        scale += not_scaled / 5;
+        not_scaled -= not_scaled / 5;
+        scale = std::min(scale, 6.5);
+        scale = std::max(scale, 0.3);
+    }
+}
+
 QRect Frame::boidsSpawnRect()
 {
     return QRect(-translate
@@ -214,11 +227,11 @@ void Frame::setMode(Frame::Mode mode)
     switch (mode)
     {
         case Mode::Boids:
-            tick_timer->start();
+            paused = false;
             break;
 
         default:
-            tick_timer->stop();
+            paused = true;
     }
 
     this->mode = mode;
