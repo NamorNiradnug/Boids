@@ -19,7 +19,8 @@ public:
     {
         Boids,
         ChangeCicrleCenter,
-        ChangeCircleRadius
+        ChangeCircleRadius,
+        DeleteCircle
     };
     int boidsNumber();
     void keyReleaseEvent(QKeyEvent *event);
@@ -34,7 +35,8 @@ public slots:
     void reloadBoids();
     void updateBoidsRadius();
     void updateBoidsNumber();
-    void startAddCircle();
+    void addCircle();
+    void deleteCircle();
     void changeScale();
 
 private:
@@ -43,11 +45,7 @@ private:
     void setMode(Mode mode);
 
     std::vector<Boid *> boids = std::vector<Boid *>(100);
-    std::vector<Circle> circles =
-    {
-        Circle(QPointF(), 20.0),
-        Circle(QPointF(200.0, 300.0), 70.0)
-    };
+    std::vector<Circle> circles = {};
     QPoint translate, last_pos;
     double scale = 1.0, not_scaled = 0.0;
     Qt::MouseButton last_button = Qt::NoButton;

@@ -8,7 +8,8 @@ SettingsBox::SettingsBox(Frame *parent) : QGroupBox(parent)
     boids_number_slider->setSliderPosition(parent->boidsNumber());
     connect(radius_slider, SIGNAL(valueChanged(int)), parent, SLOT(updateBoidsRadius()));
     connect(boids_number_slider, SIGNAL(valueChanged(int)), parent, SLOT(updateBoidsNumber()));
-    connect(add_circle_button, SIGNAL(released()), parent, SLOT(startAddCircle()));
+    connect(add_circle_button, SIGNAL(released()), parent, SLOT(addCircle()));
+    connect(delete_obstacle_button, SIGNAL(released()), parent, SLOT(deleteCircle()));
     connect(reload_button, SIGNAL(released()), parent, SLOT(reloadBoids()));
     connect(quit_button, SIGNAL(released()), parent, SLOT(close()));
 }

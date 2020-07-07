@@ -1,22 +1,14 @@
 #include "circle.hpp"
 
+double squeresSum(QPointF point)
+{
+    return point.x() * point.x() + point.y() * point.y();
+}
+
 Circle::Circle(QPointF center, double radius)
 {
-    setRadius(radius);
-    setCenter(center);
-}
-
-void Circle::setRadius(double radius)
-{
-    if (radius >= 0)
-    {
-        radius_ = radius;
-    }
-}
-
-void Circle::setCenter(QPointF center)
-{
     center_ = center;
+    radius_ = radius;
 }
 
 QPointF Circle::center()
@@ -27,4 +19,9 @@ QPointF Circle::center()
 double Circle::radius()
 {
     return radius_;
+}
+
+bool Circle::contains(QPointF point)
+{
+    return squeresSum(point - center_) <= radius_ * radius_;
 }

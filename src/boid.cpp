@@ -11,11 +11,6 @@ double frandom()
     return (double)rand() / RAND_MAX;
 }
 
-double squeresSum(QPointF point)
-{
-    return point.x() * point.x() + point.y() * point.y();
-}
-
 double Boid::view_radius = 70.0;
 
 Boid::Boid(QRect rect)

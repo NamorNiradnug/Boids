@@ -8,7 +8,6 @@ class QRect;
 class QPainter;
 
 double frandom();
-double squeresSum(QPointF point);
 
 class Boid
 {

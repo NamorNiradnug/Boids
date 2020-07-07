@@ -2,15 +2,15 @@
 
 #include <QPointF>
 
+double squeresSum(QPointF point);
 
 class Circle
 {
 public:
     Circle(QPointF center, double radius);
-    void setRadius(double radius);
-    void setCenter(QPointF center);
     QPointF center();
     double radius();
+    bool contains(QPointF point);
 
 private:
     QPointF center_;

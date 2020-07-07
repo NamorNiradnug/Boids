@@ -71,17 +71,32 @@ void Frame::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (mode == Mode::ChangeCicrleCenter)
+        switch (mode)
         {
-            new_circle_center = onMap(event->pos());
-            setMode(Mode::ChangeCircleRadius);
-        }
 
-        else if (mode == Mode::ChangeCircleRadius)
-        {
-            circles.push_back(Circle(new_circle_center, sqrt(squeresSum(new_circle_center
-                                     - onMap(event->pos())))));
-            setMode(Mode::Boids);
+            case (Mode::ChangeCicrleCenter):
+
+                new_circle_center = onMap(event->pos());
+                setMode(Mode::ChangeCircleRadius);
+                break;
+
+            case (Mode::ChangeCircleRadius):
+                circles.push_back(Circle(new_circle_center, sqrt(squeresSum(new_circle_center
+                                         - onMap(event->pos())))));
+                setMode(Mode::ChangeCicrleCenter);
+                break;
+
+            case (Mode::DeleteCircle):
+                for (int i = circles.size() - 1; i >= 0; i--)
+                {
+                    if (circles[i].contains(onMap(event->pos())))
+                    {
+                        circles.erase(circles.begin() + i);
+                        break;
+                    }
+                }
+
+                break;
         }
     }
 }
@@ -94,15 +109,36 @@ void Frame::wheelEvent(QWheelEvent *event)
 void Frame::paintEvent(QPaintEvent *_)
 {
     QPainter *painter = new QPainter(this);
+    QPoint cursor_pos = cursor().pos() - geometry().topLeft();
     painter->setPen(Qt::black);
     painter->save();
     painter->scale(scale, scale);
     painter->translate(translate + QPoint(width(), height()) / (2 * scale));
     painter->setBrush(Qt::red);
 
-    for (Circle circle : circles)
+    if (mode != Mode::DeleteCircle)
     {
-        painter->drawEllipse(circle.center(), circle.radius(), circle.radius());
+        for (Circle circle : circles)
+        {
+            painter->drawEllipse(circle.center(), circle.radius(), circle.radius());
+        }
+    }
+    else
+    {
+        for (Circle circle : circles)
+        {
+            if (circle.contains(onMap(QPointF(cursor_pos.x(), cursor_pos.y()))))
+            {
+                painter->setOpacity(0.5);
+                painter->drawEllipse(circle.center(), circle.radius(), circle.radius());
+                painter->setOpacity(1.0);
+            }
+            else
+            {
+                painter->drawEllipse(circle.center(), circle.radius(), circle.radius());
+
+            }
+        }
     }
 
     if (settings->showBoidsView())
@@ -131,12 +167,11 @@ void Frame::paintEvent(QPaintEvent *_)
     switch (mode)
     {
         case (Mode::ChangeCicrleCenter):
-            painter->drawEllipse(cursor().pos() - geometry().topLeft(), 40 * scale, 40 * scale);
+            painter->drawEllipse(cursor_pos, 40 * scale, 40 * scale);
             break;
 
         case (Mode::ChangeCircleRadius):
-            double radius = scale * sqrt(squeresSum(new_circle_center
-                                                    - onMap(cursor().pos() - geometry().topLeft())));
+            double radius = scale * sqrt(squeresSum(new_circle_center - onMap(cursor_pos)));
             painter->drawEllipse(scale * (new_circle_center
                                           + translate
                                           + QPoint(width(), height()) / (2 * scale)),
@@ -193,14 +228,19 @@ void Frame::updateBoidsNumber()
 
 }
 
-void Frame::startAddCircle()
+void Frame::addCircle()
 {
     setMode(Mode::ChangeCicrleCenter);
 }
 
+void Frame::deleteCircle()
+{
+    setMode(Mode::DeleteCircle);
+}
+
 void Frame::changeScale()
 {
-    if (abs(not_scaled) > 0.2)
+    if (abs(not_scaled) > 0.1)
     {
         scale += not_scaled / 5;
         not_scaled -= not_scaled / 5;
