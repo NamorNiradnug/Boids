@@ -11,7 +11,7 @@ Frame::Frame()
     draw_timer = new QTimer(this);
     connect(tick_timer, SIGNAL(timeout()), this, SLOT(tick()));
     connect(draw_timer, SIGNAL(timeout()), this, SLOT(update()));
-    tick_timer->setInterval(60);
+    tick_timer->setInterval(20);
     draw_timer->setInterval(20);
     tick_timer->start();
     draw_timer->start();
@@ -114,6 +114,10 @@ void Frame::paintEvent(QPaintEvent *_)
     painter->save();
     painter->scale(scale, scale);
     painter->translate(translate + QPoint(width(), height()) / (2 * scale));
+    painter->setPen(Qt::red);
+    painter->drawRect(Boid::WORLD_BORDER);
+
+    painter->setPen(Qt::black);
     painter->setBrush(Qt::red);
 
     if (mode != Mode::DeleteCircle)

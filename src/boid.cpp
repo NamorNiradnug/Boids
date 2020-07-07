@@ -12,6 +12,7 @@ double frandom()
 }
 
 double Boid::view_radius = 70.0;
+const QRectF Boid::WORLD_BORDER = QRectF(-2000, -2000, 4000, 4000);
 
 Boid::Boid(QRect rect)
 {
@@ -37,6 +38,7 @@ void Boid::tick(std::vector<Boid *> boids, std::vector<Circle> circles)
     QPointF speed_sum = speed;
     QPointF from_others = QPointF();
     QPointF from_circles = QPointF();
+    QPointF from_border = QPointF();
     QPointF delta;
     double dist;
 
@@ -96,9 +98,37 @@ void Boid::tick(std::vector<Boid *> boids, std::vector<Circle> circles)
         speed /= sqrt(squeresSum(speed));
     }
 
-    speed += from_circles;
+    if (abs(pos.x()) >= WORLD_BORDER.width() / 2 - view_radius)
+    {
+        if (pos.x() < 0)
+        {
+            from_border.setX((WORLD_BORDER.width() + pos.x()));
+        }
+        else
+        {
+            from_border.setX(-(WORLD_BORDER.width() - pos.x()));
+        }
+    }
+
+    if (abs(pos.y()) >= WORLD_BORDER.height() / 2 - view_radius)
+    {
+        if (pos.y() < 0)
+        {
+            from_border.setY((WORLD_BORDER.height() + pos.y()));
+        }
+        else
+        {
+            from_border.setY(-(WORLD_BORDER.height() - pos.y()));
+        }
+    }
+
+    speed += from_circles + from_border / 60000;
     speed /= sqrt(squeresSum(speed));
     pos = pos + 2 * speed;
+    pos.setX(std::min(pos.x(), WORLD_BORDER.right()));
+    pos.setX(std::max(pos.x(), WORLD_BORDER.left()));
+    pos.setY(std::min(pos.y(), WORLD_BORDER.bottom()));
+    pos.setY(std::max(pos.y(), WORLD_BORDER.top()));
 }
 
 void Boid::draw(QPainter *painter)
